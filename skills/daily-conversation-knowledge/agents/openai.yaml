@@ -1,0 +1,4 @@
+interface:
+  display_name: "会話から思想と知識を残す"
+  short_description: "ローカル会話から公開可能な思想と知識だけを日次ノートへ整理"
+  default_prompt: "$daily-conversation-knowledge を使って、昨日のローカルAI会話から公開可能な思想と知識を日次ノートへ整理して。"
