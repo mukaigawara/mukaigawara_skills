@@ -1,0 +1,4 @@
+interface:
+  display_name: "思想とは"
+  short_description: "人の思想を価値観、信念、世界観との関係で整理する知識スキル"
+  default_prompt: "$human-thought を使って、思想と価値観の違いを説明して。"
