@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  categories,
+  categoryIdFromEntry,
+  entryDate,
+  entrySlug,
+  entryTitle,
+  sortEntries,
+  withBase,
+} from '../lib/content';
+
+const entries = await getCollection('documents');
+const latest = sortEntries(entries.filter((entry) => entry.data.status !== 'draft')).slice(0, 5);
+---
+
+<BaseLayout>
+  <section class="hero">
+    <p class="eyebrow">Thinking in public</p>
+    <h1>思想は、完成させるものではなく、<br />更新し続けるもの。</h1>
+    <p class="lead">
+      日々の判断から見つかった原則、信念、考え方を残しています。<br />
+      結論だけでなく、変わった理由も含めて。
+    </p>
+  </section>
+
+  <section class="category-grid" aria-labelledby="category-heading">
+    <div class="section-heading">
+      <p class="eyebrow">Index</p>
+      <h2 id="category-heading">考えの置き場所</h2>
+    </div>
+    {categories.map((category, index) => {
+      const count = entries.filter((entry) => categoryIdFromEntry(entry) === category.id).length;
+      return (
+        <a class="category-card" href={withBase(`${category.id}/`)}>
+          <span class="category-number">{String(index + 1).padStart(2, '0')}</span>
+          <span class="category-label">{category.label}</span>
+          <h3>{category.title}</h3>
+          <p>{category.description}</p>
+          <span class="category-count">{count} notes</span>
+        </a>
+      );
+    })}
+  </section>
+
+  {latest.length > 0 && (
+    <section class="latest" aria-labelledby="latest-heading">
+      <div class="section-heading">
+        <p class="eyebrow">Recently considered</p>
+        <h2 id="latest-heading">最近考えたこと</h2>
+      </div>
+      <ol class="entry-list">
+        {latest.map((entry) => (
+          <li>
+            <a href={withBase(`${entrySlug(entry)}/`)}>
+              <span>{entryTitle(entry)}</span>
+              {entryDate(entry) && (
+                <time datetime={entryDate(entry)!.toISOString()}>
+                  {entryDate(entry)!.toLocaleDateString('ja-JP')}
+                </time>
+              )}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )}
+</BaseLayout>

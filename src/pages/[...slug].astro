@@ -1,0 +1,51 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  categories,
+  categoryIdFromEntry,
+  entryDate,
+  entrySlug,
+  entryTitle,
+  withBase,
+  type DocumentEntry,
+} from '../lib/content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('documents');
+  return entries.map((entry) => ({
+    params: { slug: entrySlug(entry) },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props as { entry: DocumentEntry };
+const { Content } = await render(entry);
+const category = categories.find((item) => item.id === categoryIdFromEntry(entry))!;
+const title = entryTitle(entry);
+const isDailyNote = category.id === 'daily';
+---
+
+<BaseLayout title={title} description={entry.data.description ?? category.description}>
+  <article class="document">
+    <header class="document-header">
+      <a class="back-link" href={withBase(`${category.id}/`)}>← {category.title}</a>
+      <p class="eyebrow">{category.label}</p>
+      <h1>{title}</h1>
+      {entry.data.description && <p class="document-description">{entry.data.description}</p>}
+      <div class="document-meta">
+        <span class={`status status-${entry.data.status}`}>
+          {entry.data.status === 'draft' ? '下書き' : entry.data.status === 'evolving' ? '更新中' : '公開'}
+        </span>
+        {entryDate(entry) && (
+          <time datetime={entryDate(entry)!.toISOString()}>
+            {entryDate(entry)!.toLocaleDateString('ja-JP')}
+          </time>
+        )}
+      </div>
+    </header>
+    <div class:list={['prose', { 'prose-daily': isDailyNote }]}>
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
