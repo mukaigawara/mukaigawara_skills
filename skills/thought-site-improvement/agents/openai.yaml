@@ -1,4 +1,0 @@
-interface:
-  display_name: "公開している思想を育てる"
-  short_description: "サイトを監査し、根拠が溜まったページだけを育てて公開状態を実質に合わせる"
-  default_prompt: "$thought-site-improvement を使って、公開サイトを監査し、根拠が溜まったページだけを育てて。"
