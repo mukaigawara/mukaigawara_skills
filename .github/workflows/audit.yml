@@ -1,0 +1,21 @@
+name: Audit published thoughts
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+      # 公開状態が中身の実質を上回っているページがあれば失敗する。
+      - name: Audit page substance
+        run: node scripts/audit-blog.mjs

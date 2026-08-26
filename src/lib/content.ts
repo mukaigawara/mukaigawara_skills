@@ -60,6 +60,12 @@ export function categoryIdFromEntry(entry: DocumentEntry): CategoryId {
   return entry.id.split('/')[0] as CategoryId;
 }
 
+// draft は「まだ主張のない問い」として扱い、独立したページを作らない。
+// 実質が伴ったら status を上げるだけで公開される。
+export function isPublished(entry: DocumentEntry): boolean {
+  return entry.data.status !== 'draft';
+}
+
 export function entrySlug(entry: DocumentEntry): string {
   if (entry.id.startsWith('knowledge/daily/')) {
     return entry.id.replace('knowledge/daily/', 'daily/');

@@ -285,6 +285,49 @@ h3 {
   color: var(--muted);
 }
 
+/* 育てている問い：主張として書けていないので、ページへは進ませない。 */
+.open-questions {
+  padding: 0 0 120px;
+  border-top: 1px solid var(--line);
+  padding-top: 72px;
+}
+
+.open-questions .section-heading {
+  margin-bottom: 24px;
+}
+
+.open-questions-note {
+  max-width: 640px;
+  margin: 0 0 40px;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.question-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.question-list li {
+  display: grid;
+  gap: 6px;
+  padding: 22px 0;
+  border-bottom: 1px dashed var(--line);
+}
+
+.question-title {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+}
+
+.question-description {
+  max-width: 700px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
 .document {
   max-width: 880px;
   margin-inline: auto;

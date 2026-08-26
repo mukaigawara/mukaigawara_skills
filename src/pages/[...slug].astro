@@ -7,12 +7,13 @@ import {
   entryDate,
   entrySlug,
   entryTitle,
+  isPublished,
   withBase,
   type DocumentEntry,
 } from '../lib/content';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('documents');
+  const entries = (await getCollection('documents')).filter(isPublished);
   return entries.map((entry) => ({
     params: { slug: entrySlug(entry) },
     props: { entry },

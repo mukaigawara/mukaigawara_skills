@@ -7,12 +7,13 @@ import {
   entryDate,
   entrySlug,
   entryTitle,
+  isPublished,
   sortEntries,
   withBase,
 } from '../lib/content';
 
-const entries = await getCollection('documents');
-const latest = sortEntries(entries.filter((entry) => entry.data.status !== 'draft')).slice(0, 5);
+const published = (await getCollection('documents')).filter(isPublished);
+const latest = sortEntries(published).slice(0, 5);
 ---
 
 <BaseLayout>
@@ -31,7 +32,7 @@ const latest = sortEntries(entries.filter((entry) => entry.data.status !== 'draf
       <h2 id="category-heading">考えの置き場所</h2>
     </div>
     {categories.map((category, index) => {
-      const count = entries.filter((entry) => categoryIdFromEntry(entry) === category.id).length;
+      const count = published.filter((entry) => categoryIdFromEntry(entry) === category.id).length;
       return (
         <a class="category-card" href={withBase(`${category.id}/`)}>
           <span class="category-number">{String(index + 1).padStart(2, '0')}</span>

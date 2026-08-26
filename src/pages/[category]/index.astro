@@ -7,6 +7,7 @@ import {
   entryDate,
   entrySlug,
   entryTitle,
+  isPublished,
   sortEntries,
   withBase,
   type CategoryId,
@@ -20,11 +21,13 @@ export function getStaticPaths() {
 }
 
 const { category } = Astro.props;
-const entries = sortEntries(
+const all = sortEntries(
   (await getCollection('documents')).filter(
     (entry) => categoryIdFromEntry(entry) === (category.id as CategoryId),
   ),
 );
+const entries = all.filter(isPublished);
+const questions = all.filter((entry) => !isPublished(entry));
 ---
 
 <BaseLayout title={category.title} description={category.description}>
@@ -37,13 +40,13 @@ const entries = sortEntries(
 
   <section class="collection-list" aria-label={`${category.title}の記事`}>
     {entries.length === 0 ? (
-      <p class="empty-state">このカテゴリは、これから育てていきます。</p>
+      <p class="empty-state">まだ書けるだけの根拠が集まっていません。</p>
     ) : (
       entries.map((entry) => (
         <article class="collection-item">
           <div>
             <span class={`status status-${entry.data.status}`}>
-              {entry.data.status === 'draft' ? '下書き' : entry.data.status === 'evolving' ? '更新中' : '公開'}
+              {entry.data.status === 'evolving' ? '更新中' : '公開'}
             </span>
             <h2><a href={withBase(`${entrySlug(entry)}/`)}>{entryTitle(entry)}</a></h2>
             {entry.data.description && <p>{entry.data.description}</p>}
@@ -57,4 +60,25 @@ const entries = sortEntries(
       ))
     )}
   </section>
+
+  {questions.length > 0 && (
+    <section class="open-questions" aria-labelledby="open-questions-heading">
+      <div class="section-heading">
+        <p class="eyebrow">Open questions</p>
+        <h2 id="open-questions-heading">育てている問い</h2>
+      </div>
+      <p class="open-questions-note">
+        まだ主張として書けていない問いです。<br />
+        判断の根拠が繰り返し集まった時点で、ページとして公開します。
+      </p>
+      <ul class="question-list">
+        {questions.map((entry) => (
+          <li>
+            <span class="question-title">{entryTitle(entry)}</span>
+            {entry.data.description && <span class="question-description">{entry.data.description}</span>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 </BaseLayout>
