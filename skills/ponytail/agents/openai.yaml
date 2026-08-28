@@ -1,0 +1,4 @@
+interface:
+  display_name: "怠惰なシニア開発者"
+  short_description: "書かないことを最優先し、既存実装と最小差分で済ませる"
+  default_prompt: "$ponytail を使って、この変更を最小の差分で実装して。"

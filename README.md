@@ -6,6 +6,7 @@ Claude Code、Codex、Cursor で使うスキルを保管するリポジトリで
 
 - [`daily-conversation-knowledge`](skills/daily-conversation-knowledge/)：ローカルのAI会話履歴から、公開できる思想の断片と再利用可能な知識だけを日次ノートへ整理する。
 - [`human-thought`](skills/human-thought/)：人の思想を、世界観、信念、価値観、前提、原則、実践の関係として整理する知識スキル。
+- [`ponytail`](skills/ponytail/)：怠惰なシニア開発者として、書かないことを最優先し、既存実装と最小差分で済ませる実装スキル。
 
 ## 構成
 
